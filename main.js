@@ -4,7 +4,8 @@ const createWindow = () => {
     const win = new BrowserWindow({
         autoHideMenuBar: true,
         width: 800,
-        height: 600
+        height: 600,
+        icon: 'icons/icon.png'
     })
 
     win.maximize()

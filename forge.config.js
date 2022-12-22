@@ -1,5 +1,7 @@
 module.exports = {
-  packagerConfig: {},
+  packagerConfig: {
+    icon: 'icons/icon'
+  },
   rebuildConfig: {},
   makers: [
     {
@@ -12,7 +14,11 @@ module.exports = {
     },
     {
       name: '@electron-forge/maker-deb',
-      config: {},
+      config: {
+        options: {
+          icon: 'icons/icon'
+        }
+      },
     },
     {
       name: '@electron-forge/maker-rpm',
