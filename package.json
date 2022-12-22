@@ -1,5 +1,6 @@
 {
   "name": "bbc-iplayer-custom-app",
+  "displayName": "BBC iPlayer",
   "version": "1.0.0",
   "description": "Standalone app for BBC iPlayer.",
   "main": "main.js",
