@@ -7,7 +7,8 @@ module.exports = {
     {
       name: '@electron-forge/maker-squirrel',
       config: {
-        setupIcon: 'icons/icon.ico'
+        setupIcon: 'icons/icon.ico',
+        iconUrl: 'https://play-lh.googleusercontent.com/-jCY-l3RicXFIAJCfNNeJmuRiebUbZNSyYfk3jUYqq1n6mMoqNSM6dJjIOuHs8HjbA'        
       },
     },
     {
