@@ -38,16 +38,6 @@ const createWindow = () => {
     mainWindow.maximize()
     mainWindow.on('closed', app.quit)
 
-    const lastUrl = store.get('last-url')
-    if (lastUrl) {
-        mainWindow.loadURL(lastUrl)
-        store.clear('last-url') // Clear just-in-case the app launching fails
-    } else {
-        mainWindow.loadURL(MAIN_PAGE_URL)
-    }
-
-    mainWindow.show()
-
     const progressView = new BrowserView()
     progressView.setBounds({ x: 0, y: 0, width: mainWindow.getBounds().width, height: 10 })
     progressView.webContents.loadFile('indeterminate-progress-bar.html')
@@ -77,6 +67,16 @@ const createWindow = () => {
     mainWindow.webContents.on('did-navigate', (event, url) => {
         store.set('last-url', url)
     })
+
+    const lastUrl = store.get('last-url')
+    if (lastUrl) {
+        mainWindow.loadURL(lastUrl)
+        store.clear('last-url') // Clear just-in-case the app launching fails
+    } else {
+        mainWindow.loadURL(MAIN_PAGE_URL)
+    }
+
+    mainWindow.show()
 }
 
 const listenForMessage = () => {
