@@ -106,8 +106,10 @@ const verifyCurrentIpIsUK = async () => {
             hadFailedLocationCheck = true
             showWrongIPLocationMessage({ onClose: verifyIPIn10Seconds })
         } else {
-            hadFailedLocationCheck = false
-            mainWindow.webContents.reloadIgnoringCache()
+            if (hadFailedLocationCheck) {
+                hadFailedLocationCheck = false
+                mainWindow.webContents.reloadIgnoringCache()
+            }
             verifyIPIn10Seconds()
         }
     } catch (error) {
