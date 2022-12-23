@@ -1,4 +1,5 @@
 const { app, BrowserWindow } = require('electron')
+let win = null
 
 const ifInstallingQuitEarly = () => {
     if (require('electron-squirrel-startup')) app.quit()
@@ -6,8 +7,18 @@ const ifInstallingQuitEarly = () => {
 
 ifInstallingQuitEarly()
 
+const getLockOrQuit = () => {
+    const lock = app.requestSingleInstanceLock()
+    if (!lock) {
+        app.quit()
+        process.exit(0)
+    }
+}
+
+getLockOrQuit()
+
 const createWindow = () => {
-    const win = new BrowserWindow({
+    win = new BrowserWindow({
         autoHideMenuBar: true,
         width: 800,
         height: 600,
@@ -26,4 +37,11 @@ app.whenReady().then(() => {
 
 app.on('window-all-closed', () => {
     if (process.platform !== 'darwin') app.quit()
+})
+
+app.on('second-instance', (event, commandLine, workingDirectory) => {
+    if (win) {
+        if (win.isMinimized()) win.restore()
+        win.focus()
+    }
 })
