@@ -60,11 +60,22 @@ const createWindow = () => {
     const showBack = () => {
         mainWindow.addBrowserView(backToIPlayerView)
     }
+    const hideBack = () => {
+        mainWindow.removeBrowserView(backToIPlayerView)
+    }
+
+    // needed because otherwise, it won't show up later
     showBack()
+    hideBack()
 
     mainWindow.webContents.on('did-start-loading', showProgressBar)
     mainWindow.webContents.on('did-stop-loading', hideProgressBar)
     mainWindow.webContents.on('did-navigate', (event, url) => {
+        if (!url.startsWith(MAIN_PAGE_URL)) {
+            showBack()
+        } else {
+            hideBack()
+        }
         store.set('last-url', url)
     })
 
