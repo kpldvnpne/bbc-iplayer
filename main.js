@@ -32,7 +32,10 @@ const createWindow = () => {
         autoHideMenuBar: true,
         width: 800,
         height: 600,
-        icon: 'icons/icon.png'
+        icon: 'icons/icon.png',
+        webPreferences: {
+            preload: path.join(__dirname, 'preload.js')
+        }
     })
 
     mainWindow.maximize()
@@ -68,14 +71,30 @@ const createWindow = () => {
     showBack()
     hideBack()
 
+    const hardRefreshOnForeignRegionBanner = () => {
+        mainWindow.webContents.executeJavaScript(`
+            const takeActionIfForeignRegionBannerIsPresent = () => {
+                const foreignRegionBanner = document.querySelector('.foreign-region-banner')
+                if (foreignRegionBanner != null) {
+                    window.electronAPI.sendMessage('hard-refresh')
+                }
+            }
+
+            setInterval(takeActionIfForeignRegionBannerIsPresent, 5 * 1000)
+        `)
+    }
+
     mainWindow.webContents.on('did-start-loading', showProgressBar)
     mainWindow.webContents.on('did-stop-loading', hideProgressBar)
     mainWindow.webContents.on('did-navigate', (event, url) => {
+        hardRefreshOnForeignRegionBanner()
+
         if (!url.startsWith(MAIN_PAGE_URL)) {
             showBack()
         } else {
             hideBack()
         }
+        
         store.set('last-url', url)
     })
 
@@ -102,6 +121,12 @@ const listenForMessage = () => {
 
     ipcMain.on('return-to-iPlayer', (event) => {
         mainWindow.loadURL(MAIN_PAGE_URL)
+    })
+
+    ipcMain.on('message', (event, message) => {
+        if (message === 'hard-refresh') {
+            mainWindow.webContents.reloadIgnoringCache()
+        }
     })
 }
 
