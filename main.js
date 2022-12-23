@@ -1,6 +1,9 @@
 const { default: axios } = require('axios')
 const { app, BrowserWindow, ipcMain, BrowserView } = require('electron')
 const path = require('path')
+const Store = require('electron-store')
+
+const store = new Store()
 
 require('electron-reload')(__dirname);
 
@@ -32,7 +35,14 @@ const createWindow = () => {
 
     mainWindow.maximize()
     mainWindow.on('closed', app.quit)
-    mainWindow.loadURL('https://www.bbc.co.uk/iplayer')
+
+    const lastUrl = store.get('last-url')
+    if (lastUrl) {
+        mainWindow.loadURL(lastUrl)
+        store.clear('last-url') // Clear just-in-case the app launching fails
+    } else {
+        mainWindow.loadURL('https://www.bbc.co.uk/iplayer')
+    }
 
     mainWindow.show()
 
@@ -50,6 +60,9 @@ const createWindow = () => {
 
     mainWindow.webContents.on('did-start-loading', showProgressBar)
     mainWindow.webContents.on('did-stop-loading', hideProgressBar)
+    mainWindow.webContents.on('did-navigate', (event, url) => {
+        store.set('last-url', url)
+    })
 }
 
 const listenForMessage = () => {
