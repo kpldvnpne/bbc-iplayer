@@ -1,1 +1,8 @@
-<button>Back to iPlayer</button>
+<button id="back-to-iplayer">Back to iPlayer</button>
+
+<script>
+    const backToiPlayerBtn = document.querySelector('#back-to-iPlayer')
+    backToiPlayerBtn.addEventListener('click', () => {
+        window.electronAPI.returnToiPlayer()
+    })
+</script>

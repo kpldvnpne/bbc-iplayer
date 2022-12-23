@@ -7,6 +7,8 @@ const store = new Store()
 
 require('electron-reload')(__dirname);
 
+const MAIN_PAGE_URL = 'https://www.bbc.co.uk/iplayer'
+
 let mainWindow = null
 
 const ifInstallingQuitEarly = () => {
@@ -41,7 +43,7 @@ const createWindow = () => {
         mainWindow.loadURL(lastUrl)
         store.clear('last-url') // Clear just-in-case the app launching fails
     } else {
-        mainWindow.loadURL('https://www.bbc.co.uk/iplayer')
+        mainWindow.loadURL(MAIN_PAGE_URL)
     }
 
     mainWindow.show()
@@ -58,15 +60,15 @@ const createWindow = () => {
         mainWindow.removeBrowserView(progressView)
     }
 
-    const backToIPlayer = new BrowserView({ 
+    const backToIPlayerView = new BrowserView({ 
         webPreferences: { 
             preload: path.join(__dirname, 'preload.js') 
         }
     })
-    backToIPlayer.setBounds({ x: 0, y: 10, width: 200, height: 50 })
-    backToIPlayer.webContents.loadFile('back-to-iplayer.html')
+    backToIPlayerView.setBounds({ x: 0, y: 10, width: 200, height: 50 })
+    backToIPlayerView.webContents.loadFile('back-to-iplayer.html')
     const showBack = () => {
-        mainWindow.addBrowserView(backToIPlayer)
+        mainWindow.addBrowserView(backToIPlayerView)
     }
     showBack()
 
@@ -85,6 +87,10 @@ const listenForMessage = () => {
         else if (message === 'proper-location-set') {
             verifyCurrentIpIsUK()
         }
+    })
+
+    ipcMain.on('return-to-iPlayer', (event) => {
+        mainWindow.loadURL(MAIN_PAGE_URL)
     })
 }
 
