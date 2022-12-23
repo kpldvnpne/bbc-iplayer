@@ -1,4 +1,31 @@
-<button id="back-to-iplayer">Back to iPlayer</button>
+<img id="back-to-iplayer" src="icons/icon.png" width="50" height="50" />
+
+<style>
+    * {
+        margin: 0;
+        padding: 0;
+    }
+
+    #back-to-iplayer {
+        cursor: pointer;
+        margin: 10px;
+
+        animation-name: shake;
+        animation-duration: 0.5s;
+        animation-timing-function: linear;
+        animation-iteration-count: infinite;
+        animation-direction: alternate;
+    }
+
+    @keyframes shake {
+        0% {
+            box-shadow: 0 0 1px 1px green;
+        }
+        100% {
+            box-shadow:  0 0 10px 1px green;
+        }
+    }
+</style>
 
 <script>
     const backToiPlayerBtn = document.querySelector('#back-to-iPlayer')

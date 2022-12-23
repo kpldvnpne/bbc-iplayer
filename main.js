@@ -39,7 +39,7 @@ const createWindow = () => {
     mainWindow.on('closed', app.quit)
 
     const progressView = new BrowserView()
-    progressView.setBounds({ x: 0, y: 0, width: mainWindow.getBounds().width, height: 10 })
+    progressView.setBounds({ x: 0, y: 0, width: mainWindow.getBounds().width, height: 5 })
     progressView.webContents.loadFile('indeterminate-progress-bar.html')
 
     const showProgressBar = () => {
@@ -55,7 +55,7 @@ const createWindow = () => {
             preload: path.join(__dirname, 'preload.js') 
         }
     })
-    backToIPlayerView.setBounds({ x: 0, y: 10, width: 200, height: 50 })
+    backToIPlayerView.setBounds({ x: 0, y: 0, width: 80, height: 80 })
     backToIPlayerView.webContents.loadFile('back-to-iplayer.html')
     const showBack = () => {
         mainWindow.addBrowserView(backToIPlayerView)
