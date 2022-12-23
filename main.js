@@ -99,7 +99,7 @@ const regularlyVerifyCurrentIpIsUK = async () => {
             throw new Error('Unsuccessful location information')
         }
 
-        if (body.countryCode !== 'UK') {
+        if (body.countryCode !== 'GB') {
             showWrongIPLocationMessage({ onClose: verifyIPIn10Seconds })
         }
     } catch (error) {
