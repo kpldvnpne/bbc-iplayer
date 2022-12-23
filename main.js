@@ -39,9 +39,11 @@ const createWindow = () => {
 
 const listenForMessage = () => {
     ipcMain.on('reminder-message', (event, message) => {
-        if (message === 'dont-show-again') stopVerifying = true
+        if (message === 'dont-show-again') {
+            stopVerifying = true
+        }
         else if (message === 'proper-location-set') {
-            regularlyVerifyCurrentIpIsUK()
+            verifyCurrentIpIsUK()
         }
     })
 }
@@ -86,11 +88,12 @@ const getCurrentIPLocationInfo = async () => {
 }
 
 const TEN_SECONDS = 10 * 1000
-const verifyIPIn10Seconds = () => setTimeout(regularlyVerifyCurrentIpIsUK, TEN_SECONDS)
+const verifyIPIn10Seconds = () => setTimeout(verifyCurrentIpIsUK, TEN_SECONDS)
 
 let stopVerifying = false
+let hadFailedLocationCheck = false
 
-const regularlyVerifyCurrentIpIsUK = async () => {    
+const verifyCurrentIpIsUK = async () => {    
     if (stopVerifying) return
 
     try {
@@ -100,11 +103,15 @@ const regularlyVerifyCurrentIpIsUK = async () => {
         }
 
         if (body.countryCode !== 'GB') {
+            hadFailedLocationCheck = true
             showWrongIPLocationMessage({ onClose: verifyIPIn10Seconds })
+        } else {
+            hadFailedLocationCheck = false
+            mainWindow.webContents.reloadIgnoringCache()
         }
     } catch (error) {
         console.log("Error", error)
     }
 }
 
-regularlyVerifyCurrentIpIsUK()
+verifyCurrentIpIsUK()
