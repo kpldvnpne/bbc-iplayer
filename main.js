@@ -37,9 +37,19 @@ const createWindow = () => {
     mainWindow.show()
 
     const progressView = new BrowserView()
-    mainWindow.setBrowserView(progressView)
     progressView.setBounds({ x: 0, y: 0, width: mainWindow.getBounds().width, height: 10 })
     progressView.webContents.loadFile('indeterminate-progress-bar.html')
+
+    const showProgressBar = () => {
+        mainWindow.addBrowserView(progressView)
+    }
+    
+    const hideProgressBar = () => {
+        mainWindow.removeBrowserView(progressView)
+    }
+
+    mainWindow.webContents.on('did-start-loading', showProgressBar)
+    mainWindow.webContents.on('did-stop-loading', hideProgressBar)
 }
 
 const listenForMessage = () => {
