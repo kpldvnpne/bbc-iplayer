@@ -30,6 +30,7 @@ const createWindow = () => {
 
     mainWindow.maximize()
     mainWindow.show()
+    mainWindow.on('close', app.quit)
 
     mainWindow.loadURL('https://www.bbc.co.uk/iplayer')
 }
