@@ -7,5 +7,32 @@
         BBC iPlayer requires you to be in UK.
         Please set your location to UK. 
         You can use VPNs like Windscribe to set your location to UK.
+
+        <div>
+            <button id="dont-show-again-btn">Don't show this message again</button>
+            <button id="check-again-btn">Ok, I have set proper location. Check again</button>
+        </div>
     </body>
+
+    <script>
+        const dontShowAgainBtn = document.querySelector('#dont-show-again-btn')
+        const checkAgainBtn = document.querySelector('#check-again-btn')
+
+        function closeWindow() {
+            window.close()
+        }
+
+        function onDontShowAgain() {
+            window.electronAPI.reminderMessage('dont-show-again')
+            closeWindow()
+        }
+
+        function onProperLocationSet() {
+            window.electronAPI.reminderMessage('proper-location-set')
+            closeWindow()
+        }
+
+        dontShowAgainBtn.addEventListener('click', onDontShowAgain)
+        checkAgainBtn.addEventListener('click', onProperLocationSet)
+    </script>
 </html>

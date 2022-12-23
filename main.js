@@ -1,5 +1,5 @@
 const { default: axios } = require('axios')
-const { app, BrowserWindow } = require('electron')
+const { app, BrowserWindow, ipcMain } = require('electron')
 const path = require('path')
 
 let mainWindow = null
@@ -35,8 +35,18 @@ const createWindow = () => {
     mainWindow.loadURL('https://www.bbc.co.uk/iplayer')
 }
 
+const listenForMessage = () => {
+    ipcMain.on('reminder-message', (event, message) => {
+        if (message === 'dont-show-again') stopVerifying = true
+        else if (message === 'proper-location-set') {
+            regularlyVerifyCurrentIpIsUK()
+        }
+    })
+}
+
 app.whenReady().then(() => {
     createWindow()
+    listenForMessage()
 })
 
 app.on('window-all-closed', () => {
@@ -54,11 +64,14 @@ const showWrongIPLocationMessage = ({ onClose }) => {
     const messageWindow = new BrowserWindow({
         autoHideMenuBar: true,
         width: 400,
-        height: 300
+        height: 300,
+        webPreferences: {
+            preload: path.join(__dirname, 'preload.js')
+        }
     })
 
     messageWindow.loadFile(path.join(__dirname, 'message.html'))
-    messageWindow.on('closed', onClose)
+    messageWindow.on('close', onClose)
     messageWindow.show()
 }
 
@@ -71,7 +84,11 @@ const getCurrentIPLocationInfo = async () => {
 const TEN_SECONDS = 10 * 1000
 const verifyIPIn10Seconds = () => setTimeout(regularlyVerifyCurrentIpIsUK, TEN_SECONDS)
 
+let stopVerifying = false
+
 const regularlyVerifyCurrentIpIsUK = async () => {    
+    if (stopVerifying) return
+
     try {
         const body = await getCurrentIPLocationInfo()
         if (body.status !== 'success') {
