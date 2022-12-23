@@ -2,6 +2,8 @@ const { default: axios } = require('axios')
 const { app, BrowserWindow, ipcMain } = require('electron')
 const path = require('path')
 
+require('electron-reload')(__dirname);
+
 let mainWindow = null
 
 const ifInstallingQuitEarly = () => {
@@ -63,11 +65,13 @@ app.on('second-instance', (event, commandLine, workingDirectory) => {
 const showWrongIPLocationMessage = ({ onClose }) => {
     const messageWindow = new BrowserWindow({
         autoHideMenuBar: true,
-        width: 400,
+        width: 500,
         height: 300,
+        resizable: false,
         webPreferences: {
             preload: path.join(__dirname, 'preload.js')
-        }
+        },
+        alwaysOnTop: true,
     })
 
     messageWindow.loadFile(path.join(__dirname, 'message.html'))
