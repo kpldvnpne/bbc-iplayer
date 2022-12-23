@@ -1,16 +1,68 @@
 <html>
     <head>
         <title>Location is not UK</title>
+
+        <style>
+            * {
+                box-sizing: border-box;
+            }
+
+            .buttons {
+                display: flex;
+                flex-direction: column;
+            }
+            
+            .buttons > button {
+                cursor: pointer;
+                border: none;
+                background: #0000FF;
+                margin-top: 5px;
+                margin-bottom: 5px;
+                color: #FFF;
+                box-sizing: border-box;
+                height: 40px;
+                border-radius: 20px;
+            }
+
+            #dont-show-again-btn {
+                background: none;
+                color: #000;
+            }
+
+            #dont-show-again-btn:hover {
+                background: #eee;
+            }
+
+            #check-again-btn {
+                background: #3333FF;
+            }
+
+            #check-again-btn:hover {
+                background: #0000FF;
+            }
+
+            .screen {
+                padding: 10px;
+                height: 90vh;
+                display: flex;
+                flex-direction: column;
+                justify-content: space-between;
+            }
+        </style>
     </head>
 
     <body>
-        BBC iPlayer requires you to be in UK.
-        Please set your location to UK. 
-        You can use VPNs like Windscribe to set your location to UK.
-
-        <div>
-            <button id="dont-show-again-btn">Don't show this message again</button>
-            <button id="check-again-btn">Ok, I have set proper location. Check again</button>
+        <div class="screen">
+            <p>
+                BBC iPlayer requires you to be in UK.
+                Please set your location to UK. 
+                You can use VPNs like Windscribe to set your location to UK.
+            </p>
+            
+            <div class="buttons">
+                <button id="dont-show-again-btn">Don't show this message again</button>
+                <button id="check-again-btn">Ok, I have set proper location. Check again</button>
+            </div>
         </div>
     </body>
 
