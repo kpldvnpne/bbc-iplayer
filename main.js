@@ -73,7 +73,7 @@ const showWrongIPLocationMessage = ({ onClose }) => {
         webPreferences: {
             preload: path.join(__dirname, 'preload.js')
         },
-        alwaysOnTop: true,
+        parent: mainWindow
     })
 
     messageWindow.loadFile(path.join(__dirname, 'message.html'))
