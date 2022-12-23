@@ -1,5 +1,5 @@
 const { default: axios } = require('axios')
-const { app, BrowserWindow, ipcMain } = require('electron')
+const { app, BrowserWindow, ipcMain, BrowserView } = require('electron')
 const path = require('path')
 
 require('electron-reload')(__dirname);
@@ -31,10 +31,15 @@ const createWindow = () => {
     })
 
     mainWindow.maximize()
-    mainWindow.show()
     mainWindow.on('closed', app.quit)
-
     mainWindow.loadURL('https://www.bbc.co.uk/iplayer')
+
+    mainWindow.show()
+
+    const progressView = new BrowserView()
+    mainWindow.setBrowserView(progressView)
+    progressView.setBounds({ x: 0, y: 0, width: mainWindow.getBounds().width, height: 10 })
+    progressView.webContents.loadFile('indeterminate-progress-bar.html')
 }
 
 const listenForMessage = () => {
