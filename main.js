@@ -108,6 +108,7 @@ const verifyCurrentIpIsUK = async () => {
         } else {
             hadFailedLocationCheck = false
             mainWindow.webContents.reloadIgnoringCache()
+            verifyIPIn10Seconds()
         }
     } catch (error) {
         console.log("Error", error)
