@@ -58,7 +58,7 @@ const showWrongIPLocationMessage = ({ onClose }) => {
     })
 
     messageWindow.loadFile(path.join(__dirname, 'message.html'))
-    messageWindow.on('close', onClose)
+    messageWindow.on('closed', onClose)
     messageWindow.show()
 }
 
