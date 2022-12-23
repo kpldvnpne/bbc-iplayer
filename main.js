@@ -1,5 +1,11 @@
 const { app, BrowserWindow } = require('electron')
 
+const ifInstallingQuitEarly = () => {
+    if (require('electron-squirrel-startup')) app.quit()
+}
+
+ifInstallingQuitEarly()
+
 const createWindow = () => {
     const win = new BrowserWindow({
         autoHideMenuBar: true,
