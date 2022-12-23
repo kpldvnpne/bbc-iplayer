@@ -58,6 +58,18 @@ const createWindow = () => {
         mainWindow.removeBrowserView(progressView)
     }
 
+    const backToIPlayer = new BrowserView({ 
+        webPreferences: { 
+            preload: path.join(__dirname, 'preload.js') 
+        }
+    })
+    backToIPlayer.setBounds({ x: 0, y: 10, width: 200, height: 50 })
+    backToIPlayer.webContents.loadFile('back-to-iplayer.html')
+    const showBack = () => {
+        mainWindow.addBrowserView(backToIPlayer)
+    }
+    showBack()
+
     mainWindow.webContents.on('did-start-loading', showProgressBar)
     mainWindow.webContents.on('did-stop-loading', hideProgressBar)
     mainWindow.webContents.on('did-navigate', (event, url) => {
